@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model user {
+  id       Int    @id @default(autoincrement())
+  name     String
+  password String
+}
+
+model car {
+  id                   Int     @id @default(autoincrement())
+  brand                String
+  model                String
+  year                 Int
+  version              String
+  oil_quantity         Decimal
+  coolant_quantity     Decimal
+  oil_engine_id        Int
+  oil_transmission_id  Int
+  oil_filter_id        Int
+  fuel_filter_id       Int
+  engine_air_filter_id Int
+  cabin_filter_id      Int
+  coolant_id           Int
+
+  oil_engine        oil_engine        @relation(fields: [oil_engine_id], references: [id])
+  oil_transmission  oil_transmission  @relation(fields: [oil_transmission_id], references: [id])
+  oil_filter        oil_filter        @relation(fields: [oil_filter_id], references: [id])
+  fuel_filter       fuel_filter       @relation(fields: [fuel_filter_id], references: [id])
+  engine_air_filter engine_air_filter @relation(fields: [engine_air_filter_id], references: [id])
+  cabin_filter      cabin_filter      @relation(fields: [cabin_filter_id], references: [id])
+  coolant           coolant           @relation(fields: [coolant_id], references: [id])
+}
+
+model oil_engine {
+  id            Int    @id @default(autoincrement())
+  name          String
+  viscosity     String
+  specification String
+
+  car car[]
+}
+
+model oil_transmission {
+  id            Int    @id @default(autoincrement())
+  name          String
+  viscosity     String
+  specification String
+
+  car car[]
+}
+
+model oil_filter {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  car car[]
+}
+
+model fuel_filter {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  car car[]
+}
+
+model engine_air_filter {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  car car[]
+}
+
+model cabin_filter {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  car car[]
+}
+
+model coolant {
+  id            Int    @id @default(autoincrement())
+  name          String
+  specification String
+
+  car car[]
+}

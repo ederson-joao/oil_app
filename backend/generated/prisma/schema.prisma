@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum VehicleType {
+  car
+  motorcycle
+  truck
+}
+
+model User {
+  id                  String   @id @default(uuid())
+  email               String   @unique
+  name                String
+  google_id           String   @unique
+  subscription_active Boolean  @default(false)
+  created_at          DateTime @default(now())
+}
+
+model Oil {
+  id            String  @id @default(uuid())
+  name          String
+  viscosity     String
+  specification String?
+
+  vehicles Vehicle[]
+}
+
+model Vehicle {
+  id      String      @id @default(uuid())
+  brand   String
+  model   String
+  year    Int
+  version String?
+  type    VehicleType
+
+  oil_id String
+  oil    Oil    @relation(fields: [oil_id], references: [id])
+}
