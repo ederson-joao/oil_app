@@ -1,26 +1,28 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model user {
+model User {
   id       Int    @id @default(autoincrement())
   name     String
   password String
+
+  @@map("user")
 }
 
-model car {
-  id                   Int     @id @default(autoincrement())
-  brand                String
-  model                String
-  year                 Int
-  version              String
-  oil_quantity         Decimal
-  coolant_quantity     Decimal
+model Car {
+  id               Int     @id @default(autoincrement())
+  brand            String
+  model            String
+  year             Int
+  version          String
+  oil_quantity     Decimal
+  coolant_quantity Decimal
+
   oil_engine_id        Int
   oil_transmission_id  Int
   oil_filter_id        Int
@@ -29,65 +31,81 @@ model car {
   cabin_filter_id      Int
   coolant_id           Int
 
-  oil_engine        oil_engine        @relation(fields: [oil_engine_id], references: [id])
-  oil_transmission  oil_transmission  @relation(fields: [oil_transmission_id], references: [id])
-  oil_filter        oil_filter        @relation(fields: [oil_filter_id], references: [id])
-  fuel_filter       fuel_filter       @relation(fields: [fuel_filter_id], references: [id])
-  engine_air_filter engine_air_filter @relation(fields: [engine_air_filter_id], references: [id])
-  cabin_filter      cabin_filter      @relation(fields: [cabin_filter_id], references: [id])
-  coolant           coolant           @relation(fields: [coolant_id], references: [id])
+  oil_engine        OilEngine       @relation(fields: [oil_engine_id], references: [id])
+  oil_transmission  OilTransmission @relation(fields: [oil_transmission_id], references: [id])
+  oil_filter        OilFilter       @relation(fields: [oil_filter_id], references: [id])
+  fuel_filter       FuelFilter      @relation(fields: [fuel_filter_id], references: [id])
+  engine_air_filter EngineAirFilter @relation(fields: [engine_air_filter_id], references: [id])
+  cabin_filter      CabinFilter     @relation(fields: [cabin_filter_id], references: [id])
+  coolant           Coolant         @relation(fields: [coolant_id], references: [id])
+
+  @@map("car")
 }
 
-model oil_engine {
+model OilEngine {
   id            Int    @id @default(autoincrement())
   name          String
   viscosity     String
   specification String
 
-  car car[]
+  car Car[]
+
+  @@map("oil_engine")
 }
 
-model oil_transmission {
+model OilTransmission {
   id            Int    @id @default(autoincrement())
   name          String
   viscosity     String
   specification String
 
-  car car[]
+  car Car[]
+
+  @@map("oil_transmission")
 }
 
-model oil_filter {
+model OilFilter {
   id   Int    @id @default(autoincrement())
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("oil_filter")
 }
 
-model fuel_filter {
+model FuelFilter {
   id   Int    @id @default(autoincrement())
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("fuel_filter")
 }
 
-model engine_air_filter {
+model EngineAirFilter {
   id   Int    @id @default(autoincrement())
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("engine_air_filter")
 }
 
-model cabin_filter {
+model CabinFilter {
   id   Int    @id @default(autoincrement())
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("cabin_filter")
 }
 
-model coolant {
+model Coolant {
   id            Int    @id @default(autoincrement())
   name          String
   specification String
 
-  car car[]
+  car Car[]
+
+  @@map("coolant")
 }
