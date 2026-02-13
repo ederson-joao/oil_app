@@ -1,29 +1,23 @@
 import { Router } from 'express';
-import { prisma } from "../lib/prisma";
+import { getVersions } from '../services/versions.service';
 
 const router = Router();
 
 router.get('/versions', async (req, res) => {
-  const { year, brand, model } = req.query;
+  try {
+    const { year, brand, model } = req.query;
 
-  if (!year || !brand || !model) {
-    return res.status(400).json({ error: 'Year, brand and model are required' });
-  }
-
-  const versions = await prisma.car.findMany({
-    where: {
-      year
-: Number(year),
+    const versions = await getVersions({
+      year: Number(year),
       brand: String(brand),
       model: String(model),
-    },
-    distinct: ['version'],
-    select: {
-      version: true,
-    },
   });
 
-  res.json(versions.map(item => item.version));
+    res.json(versions);
+  }
+  catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
 });
 
 export default router;
