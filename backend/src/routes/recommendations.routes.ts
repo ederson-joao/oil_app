@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getRecommendations } from '../services/recommendations.service';
+import { RecommendationResponse, getRecommendations } from '../services/recommendations.service';
 
 const router = Router();
 
@@ -7,7 +7,12 @@ router.get('/recommendations', async (req, res) => {
   try {
     const { year, brand, model, version } = req.query;
 
-    const car = await getRecommendations({
+    if (!year || !brand || !model || !version) {
+      res.status(422).json({ error: "Year or brand query parameter is required" });
+      return;
+    }
+
+    const car:RecommendationResponse = await getRecommendations({
       year: Number(year),
       brand: String(brand),
       model: String(model),

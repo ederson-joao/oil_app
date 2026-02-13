@@ -1,9 +1,10 @@
 import { prisma } from "../lib/prisma";
 
-export async function getModels(year: number, brand: string) {
-    if (!year || !brand) {
-    throw new Error("Year and brand are required");
-    }
+export type ModelsResponse = {
+  model: string[];
+}
+
+export async function getModels(year: number, brand: string) : Promise<ModelsResponse> {
 
     const models = await prisma.car.findMany({
     where: {
@@ -16,5 +17,7 @@ export async function getModels(year: number, brand: string) {
     },
   });
 
-  return models.map(item => item.model);
+  return { 
+    model : models.map(item => item.model)
+  }
 }

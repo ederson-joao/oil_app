@@ -1,10 +1,10 @@
 import { prisma } from "../lib/prisma";
 
-export async function getBrands(year: number) {
-  if (!year) {
-    throw new Error("Year is required");
-  }
+export type BrandsResponse = {
+  brand: string[];
+}
 
+export async function getBrands(year: number): Promise<BrandsResponse> {
   const brands = await prisma.car.findMany({
     where: {
       year: year,
@@ -15,5 +15,7 @@ export async function getBrands(year: number) {
     },
   });
 
-  return brands.map(item => item.brand);
+  return {
+    brand: brands.map(item => item.brand),
+  };
 }

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getModels } from '../services/models.service';
+import { ModelsResponse, getModels } from '../services/models.service';
 
 const router = Router();
 
@@ -7,7 +7,12 @@ router.get('/models', async (req, res) => {
   try {
     const { year, brand } = req.query;
 
-    const models = await getModels(
+    if (!year || !brand) {
+      res.status(422).json({ error: "Year or brand query parameter is required" });
+      return;
+    }
+
+    const models:ModelsResponse = await getModels(
       Number(year),
       String(brand)
     );

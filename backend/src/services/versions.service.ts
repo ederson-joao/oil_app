@@ -1,17 +1,17 @@
 import { prisma } from "../lib/prisma";
 
+export type VersionsResponse = {
+  version: string[];
+}
+
 type VersionParams = {
   year: number;
   brand: string;
   model: string;
 };
 
-export async function getVersions(params: VersionParams) {
+export async function getVersions(params: VersionParams) : Promise<VersionsResponse> {
     const { year, brand, model } = params;
-
-    if (!year || !brand || !model) {
-    throw new Error("Year, brand and model are required");
-    }
 
     const versions = await prisma.car.findMany({
     where: {
@@ -25,5 +25,7 @@ export async function getVersions(params: VersionParams) {
     },
   });
 
-  return versions.map(item => item.version);
+  return {
+    version : versions.map(item => item.version)
+  }
 }

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getVersions } from '../services/versions.service';
+import { VersionsResponse, getVersions } from '../services/versions.service';
 
 const router = Router();
 
@@ -7,7 +7,12 @@ router.get('/versions', async (req, res) => {
   try {
     const { year, brand, model } = req.query;
 
-    const versions = await getVersions({
+    if (!year || !brand || !model) {
+      res.status(422).json({ error: "Year, brand or model query parameter is required" });
+      return;
+    }
+
+    const versions:VersionsResponse = await getVersions({
       year: Number(year),
       brand: String(brand),
       model: String(model),

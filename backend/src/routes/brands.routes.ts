@@ -1,13 +1,18 @@
 import { Router } from 'express';
-import { getBrands } from '../services/brands.service';
+import { BrandsResponse, getBrands } from '../services/brands.service';
 
 const router = Router();
 
-router.get('/brands', async (req, res) => {
+router.get('/brands', async (req, res): Promise<void> => {
   try {
     const { year } = req.query;
 
-    const brands = await getBrands(Number(year));
+    if (!year) {
+      res.status(422).json({ error: "Year query parameter is required" });
+      return;
+    }
+
+    const brands:BrandsResponse = await getBrands(Number(year));
 
     res.json(brands);
   } catch (error) {
