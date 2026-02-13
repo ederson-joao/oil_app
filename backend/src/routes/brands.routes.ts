@@ -1,26 +1,18 @@
 import { Router } from 'express';
-import { prisma } from "../lib/prisma";
+import { getBrands } from '../services/brands.service';
 
 const router = Router();
 
 router.get('/brands', async (req, res) => {
-  const { year } = req.query;
+  try {
+    const { year } = req.query;
 
-  if (!year) {
-    return res.status(400).json({ error: 'Year is required' });
+    const brands = await getBrands(Number(year));
+
+    res.json(brands);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
-
-  const brands = await prisma.car.findMany({
-    where: {
-      year: Number(year),
-    },
-    distinct: ['brand'],
-    select: {
-      brand: true,
-    },
-  });
-
-  res.json(brands.map(item => item.brand));
 });
 
 export default router;
