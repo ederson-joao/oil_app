@@ -18,7 +18,7 @@ export async function loginUser(
   const { name, password } = params;
 
   if (!name || !password) {
-    throw new Error("Usuário e senha são obrigatórios");
+    throw new Error("Username and password are required");
   }
 
   const user = await prisma.user.findFirstOrThrow({
@@ -26,7 +26,7 @@ export async function loginUser(
   });
 
   if (user.password !== password) {
-    throw new Error("Usuário ou senha inválidos");
+    throw new Error("Invalid username or password");
   }
 
   return {

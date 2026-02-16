@@ -9,7 +9,7 @@ router.post('/login', async (req, res) => {
 
     if (!name || !password) {
       return res.status(422).json({
-        error: "Usuário e senha são obrigatórios",
+        error: "Username and password are required.",
       });
     }
 
@@ -19,30 +19,30 @@ router.post('/login', async (req, res) => {
     });
 
     return res.json({
-      message: "Login realizado com sucesso",
+      message: "Login successfully",
       ...result,
     });
   } catch (error: any) {
     if (error.code === "P2025") {
       return res.status(401).json({
-        error: "Usuário ou senha inválidos",
+        error: "Invalid username or password",
       });
     }
 
-    if (error.message === "Usuário ou senha inválidos") {
+    if (error.message === "Invalid username or password") {
       return res.status(401).json({
         error: error.message,
       });
     }
 
-    if (error.message === "Usuário e senha são obrigatórios") {
+    if (error.message === "Username and password are required.") {
       return res.status(400).json({
         error: error.message,
       });
     }
 
     return res.status(500).json({
-      error: "Erro interno no servidor",
+      error: "Internal server error",
     });
   }
 });
