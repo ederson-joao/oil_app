@@ -1,24 +1,38 @@
 import { prisma } from "../lib/prisma";
 
-export async function loginUser(name: string, password: string) {
+export type LoginResponse = {
+  user: {
+    id: number;
+    name: string;
+  };
+};
+
+type LoginParams = {
+  name: string;
+  password: string;
+};
+
+export async function loginUser(
+  params: LoginParams
+): Promise<LoginResponse> {
+  const { name, password } = params;
+
   if (!name || !password) {
     throw new Error("Usuário e senha são obrigatórios");
   }
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findFirstOrThrow({
     where: { name },
   });
-
-  if (!user) {
-    throw new Error("Usuário ou senha inválidos");
-  }
 
   if (user.password !== password) {
     throw new Error("Usuário ou senha inválidos");
   }
 
   return {
-    id: user.id,
-    name: user.name,
+    user: {
+      id: user.id,
+      name: user.name,
+    },
   };
 }
