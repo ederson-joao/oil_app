@@ -3,7 +3,7 @@ import { LoginResponse, loginUser } from '../services/login.service';
 
 const router = Router();
 
-router.post('/login', async (req, res) => {
+router.get('/login', async (req, res) => {
   try {
     const { name, password } = req.body;
 
