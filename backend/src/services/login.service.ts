@@ -17,10 +17,6 @@ export async function loginUser(
 ): Promise<LoginResponse> {
   const { name, password } = params;
 
-  if (!name || !password) {
-    throw new Error("Username and password are required");
-  }
-
   const user = await prisma.user.findFirstOrThrow({
     where: { name },
   });
