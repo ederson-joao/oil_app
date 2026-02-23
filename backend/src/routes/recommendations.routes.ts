@@ -8,15 +8,15 @@ router.get('/recommendations', async (req, res) => {
     const { year, brand, model, version } = req.query;
 
     if (!year || !brand || !model || !version) {
-      res.status(422).json({ error: "Year or brand query parameter is required" });
+      res.status(422).json({ error: "The query parameters required are year, make, model, or version." });
       return;
     }
 
     const car:RecommendationResponse = await getRecommendations({
       year: Number(year),
-      brand: String(brand),
-      model: String(model),
-      version: String(version),
+      brand: brand as string,
+      model: model as string,
+      version: version as string,
     });
 
     res.json(car);
