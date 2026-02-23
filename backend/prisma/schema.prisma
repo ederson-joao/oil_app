@@ -1,93 +1,122 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model user {
+model User {
   id       Int    @id @default(autoincrement())
   name     String
   password String
+
+  @@map("user")
 }
 
-model car {
-  id                   Int     @id @default(autoincrement())
-  brand                String
-  model                String
-  year                 Int
-  version              String
-  oil_quantity         Decimal
-  coolant_quantity     Decimal
-  oil_engine_id        Int
-  oil_transmission_id  Int
-  oil_filter_id        Int
-  fuel_filter_id       Int
-  engine_air_filter_id Int
-  cabin_filter_id      Int
-  coolant_id           Int
+model Car {
+  id               String  @id
+  brand            String
+  model            String
+  year             Int
+  version          String
+  oil_quantity     Decimal
+  coolant_quantity Decimal
 
-  oil_engine        oil_engine        @relation(fields: [oil_engine_id], references: [id])
-  oil_transmission  oil_transmission  @relation(fields: [oil_transmission_id], references: [id])
-  oil_filter        oil_filter        @relation(fields: [oil_filter_id], references: [id])
-  fuel_filter       fuel_filter       @relation(fields: [fuel_filter_id], references: [id])
-  engine_air_filter engine_air_filter @relation(fields: [engine_air_filter_id], references: [id])
-  cabin_filter      cabin_filter      @relation(fields: [cabin_filter_id], references: [id])
-  coolant           coolant           @relation(fields: [coolant_id], references: [id])
+  oil_engine_id             String
+  oil_transmission_id       String
+  oil_filter_id             String
+  fuel_filter_id            String
+  engine_air_filter_id      String
+  cabin_filter_id           String
+  cabin_filter_with_coal_id String
+  coolant_id                String
+
+  oil_engine             OilEngine           @relation(fields: [oil_engine_id], references: [id])
+  oil_transmission       OilTransmission     @relation(fields: [oil_transmission_id], references: [id])
+  oil_filter             OilFilter           @relation(fields: [oil_filter_id], references: [id])
+  fuel_filter            FuelFilter          @relation(fields: [fuel_filter_id], references: [id])
+  engine_air_filter      EngineAirFilter     @relation(fields: [engine_air_filter_id], references: [id])
+  cabin_filter           CabinFilter         @relation(fields: [cabin_filter_id], references: [id])
+  cabin_filter_with_coal CabinFilterWithCoal @relation(fields: [cabin_filter_with_coal_id], references: [id])
+  coolant                Coolant             @relation(fields: [coolant_id], references: [id])
+
+  @@map("car")
 }
 
-model oil_engine {
-  id            Int    @id @default(autoincrement())
+model OilEngine {
+  id            String @id
   name          String
   viscosity     String
   specification String
 
-  car car[]
+  car Car[]
+
+  @@map("oil_engine")
 }
 
-model oil_transmission {
-  id            Int    @id @default(autoincrement())
+model OilTransmission {
+  id            String @id
   name          String
   viscosity     String
   specification String
 
-  car car[]
+  car Car[]
+
+  @@map("oil_transmission")
 }
 
-model oil_filter {
-  id   Int    @id @default(autoincrement())
+model OilFilter {
+  id   String @id
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("oil_filter")
 }
 
-model fuel_filter {
-  id   Int    @id @default(autoincrement())
+model FuelFilter {
+  id   String @id
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("fuel_filter")
 }
 
-model engine_air_filter {
-  id   Int    @id @default(autoincrement())
+model EngineAirFilter {
+  id   String @id
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("engine_air_filter")
 }
 
-model cabin_filter {
-  id   Int    @id @default(autoincrement())
+model CabinFilter {
+  id   String @id
   name String
 
-  car car[]
+  car Car[]
+
+  @@map("cabin_filter")
 }
 
-model coolant {
-  id            Int    @id @default(autoincrement())
+model CabinFilterWithCoal {
+  id   String @id
+  name String
+
+  car Car[]
+
+  @@map("cabin_filter_with_coal")
+}
+
+model Coolant {
+  id            String @id
   name          String
   specification String
 
-  car car[]
+  car Car[]
+
+  @@map("coolant")
 }

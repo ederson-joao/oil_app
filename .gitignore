@@ -1,2 +1,9 @@
-node_modules
+# Node
+node_modules/
+
+# Environment variables
 .env
+
+# Prisma
+generated/
+.prisma/
