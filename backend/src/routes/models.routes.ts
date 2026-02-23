@@ -14,7 +14,7 @@ router.get('/models', async (req, res) => {
 
     const models:ModelsResponse = await getModels(
       Number(year),
-      String(brand)
+      brand as string
     );
 
     res.json(models);
