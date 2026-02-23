@@ -14,8 +14,8 @@ router.get('/versions', async (req, res) => {
 
     const versions:VersionsResponse = await getVersions({
       year: Number(year),
-      brand: String(brand),
-      model: String(model),
+      brand: brand as string,
+      model: model as string,
   });
 
     res.json(versions);
